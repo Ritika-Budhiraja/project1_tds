@@ -1,0 +1,63 @@
+prompts:
+  - "{{ question }}"
+
+providers:
+  - id: http
+    config:
+      url: http://localhost:8000/query
+      method: POST
+      headers:
+        Content-Type: application/json
+      body: |
+        {
+          "question": "{{ question }}"
+        }
+      transformResponse: json
+
+defaultTest:
+  options:
+    provider: http
+  assert:
+    - type: is-json
+      value:
+        type: object
+        required:
+          - answer
+          - links
+        properties:
+          answer:
+            type: string
+          links:
+            type: array
+            items:
+              type: object
+              required:
+                - url
+                - text
+              properties:
+                url:
+                  type: string
+                text:
+                  type: string
+
+tests:
+  # 1. Model Question
+  - vars:
+      question: >-
+        The question asks to use gpt-3.5-turbo-0125 model but the ai-proxy
+        provided by Anand sir only supports gpt-4o-mini. Should we use gpt-4o-mini or use the OpenAI API?
+    assert:
+      - type: llm-rubric
+        transform: output.answer
+        value: Clarifies model choice and requirements
+      - type: contains-any
+        transform: JSON.stringify(output.links)
+        value: 
+          - https://discourse.onlinedegree.iitm.ac.in/t/ga5-question-8-clarification/155939
+          - https://tds.s-anand.net/
+
+  # [Previous test cases remain the same...]
+
+writeLatestResults: true
+commandLineOptions:
+  cache: false

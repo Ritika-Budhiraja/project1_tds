@@ -1,0 +1,172 @@
+description: TDS Virtual TA Project Sample Questions
+providers:
+  - id: http
+    config:
+      url: http://localhost:8000/query
+      method: POST
+      headers:
+        Content-Type: application/json
+      body: |
+        {
+          "question": "{{question}}"
+        }
+      transformResponse: json
+
+defaultTest:
+  assert:
+    - type: is-json
+      value:
+        type: object
+        required:
+          - answer
+          - links
+        properties:
+          answer:
+            type: string
+          links:
+            type: array
+            items:
+              type: object
+              required:
+                - url
+                - text
+              properties:
+                url:
+                  type: string
+                text:
+                  type: string
+
+tests:
+  - vars:
+      question: "Will the TDS end-term be open book or closed book?"
+    assert:
+      - type: llm-rubric
+        transform: output.answer
+        value: "Provides clear information about exam format"
+      - type: contains
+        transform: output.answer
+        value: "exam"
+
+  - vars:
+      question: "What are the requirements for GA5 submission?"
+    assert:
+      - type: llm-rubric
+        transform: output.answer
+        value: "Lists GA5 submission requirements"
+      - type: contains
+        transform: output.answer
+        value: "GitHub"
+
+  - vars:
+      question: "How do I fix CORS issues in my FastAPI application?"
+    assert:
+      - type: llm-rubric
+        transform: output.answer
+        value: "Explains CORS configuration"
+      - type: contains
+        transform: output.answer
+        value: "CORSMiddleware"
+
+  - vars:
+      question: "What is the format for ChromaDB vector embeddings?"
+    assert:
+      - type: llm-rubric
+        transform: output.answer
+        value: "Explains vector embeddings format"
+      - type: contains
+        transform: output.answer
+        value: "embedding"
+
+  - vars:
+      question: "How can I optimize my local LLM performance?"
+    assert:
+      - type: llm-rubric
+        transform: output.answer
+        value: "Provides optimization tips"
+      - type: contains
+        transform: output.answer
+        value: "performance"
+
+  - vars:
+      question: "What is the procedure for handling base64 encoded images?"
+    assert:
+      - type: llm-rubric
+        transform: output.answer
+        value: "Explains image handling"
+      - type: contains
+        transform: output.answer
+        value: "base64"
+
+  - vars:
+      question: "How do I implement proper error handling in FastAPI?"
+    assert:
+      - type: llm-rubric
+        transform: output.answer
+        value: "Covers error handling"
+      - type: contains
+        transform: output.answer
+        value: "HTTPException"
+
+  - vars:
+      question: "What's the best way to structure my GA5 project repository?"
+    assert:
+      - type: llm-rubric
+        transform: output.answer
+        value: "Explains repository structure"
+      - type: contains
+        transform: output.answer
+        value: "repository"
+
+  - vars:
+      question: "How can I test my Virtual TA's response quality?"
+    assert:
+      - type: llm-rubric
+        transform: output.answer
+        value: "Explains testing methods"
+      - type: contains
+        transform: output.answer
+        value: "test"
+
+  - vars:
+      question: "What should I do if my Podman container fails to start?"
+    assert:
+      - type: llm-rubric
+        transform: output.answer
+        value: "Provides troubleshooting steps"
+      - type: contains
+        transform: output.answer
+        value: "podman"
+
+  - vars:
+      question: "How do I implement rate limiting in my FastAPI application?"
+    assert:
+      - type: llm-rubric
+        transform: output.answer
+        value: "Explains rate limiting"
+      - type: contains
+        transform: output.answer
+        value: "rate"
+
+  - vars:
+      question: "What's the recommended way to handle authentication in the Virtual TA?"
+    assert:
+      - type: llm-rubric
+        transform: output.answer
+        value: "Explains authentication approaches"
+      - type: contains
+        transform: output.answer
+        value: "auth"
+
+  - vars:
+      question: "How can I ensure my GA5 submission meets all requirements?"
+    assert:
+      - type: llm-rubric
+        transform: output.answer
+        value: "Lists submission criteria"
+      - type: contains
+        transform: output.answer
+        value: "requirements"
+
+writeLatestResults: true
+commandLineOptions:
+  cache: false

@@ -5,9 +5,12 @@ aiohttp
 numpy
 pydantic
 beautifulsoup4
-markdown
+html2text
 tqdm
+markdown
+markdownify
+openai
+playwright
 python-multipart
 setuptools
-playwright
-markdownify
+chromadb

@@ -1,0 +1,45 @@
+version: 1
+
+prompts:
+  - "{{ question }}"
+
+provider: http://localhost:8000/query
+
+tests:
+  - vars:
+      question: >-
+        The question asks to use gpt-3.5-turbo-0125 model but the ai-proxy
+        provided by Anand sir only supports gpt-4o-mini. Should we use gpt-4o-mini or use the OpenAI API?
+    assert:
+      - type: contains-any
+        value: 
+          - "requirements"
+          - "model"
+          - "gpt"
+      - type: contains-any
+        value: 
+          - "discourse.onlinedegree.iitm.ac.in"
+          - "tds.s-anand.net"
+
+  - vars:
+      question: >-
+        If a student scores 10/10 on GA4 as well as a bonus, how would it appear on the dashboard?
+    assert:
+      - type: contains
+        value: "110"
+
+  - vars:
+      question: >-
+        Will the TDS end-term be open book or closed book?
+    assert:
+      - type: contains-any
+        value:
+          - "open"
+          - "closed"
+          - "not yet announced"
+
+# [And so on for all 13 test cases...]
+
+writeLatestResults: true
+commandLineOptions:
+  cache: false
